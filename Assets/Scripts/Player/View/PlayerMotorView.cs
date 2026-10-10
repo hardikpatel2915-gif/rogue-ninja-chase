@@ -33,7 +33,7 @@ namespace RogueNinjaChase.Player.View
         {
             _body = GetComponent<Rigidbody>();
             _capsule = GetComponent<CapsuleCollider>();
-            _body.constraints = RigidbodyConstraints.FreezeRotation;
+            _body.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             _body.interpolation = RigidbodyInterpolation.Interpolate;
 
             _standingHeight = _capsule.height;
