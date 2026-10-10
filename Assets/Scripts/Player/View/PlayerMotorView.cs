@@ -8,7 +8,7 @@ namespace RogueNinjaChase.Player.View
 {
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(CapsuleCollider))]
-    public sealed class PlayerMotorView : MonoBehaviour, IPlayerMotorView, IAimSource
+    public sealed class PlayerMotorView : MonoBehaviour, IPlayerMotorView, IAimSource, IPlayerStance
     {
         const float CrouchHeightScale = 0.5f;
 
@@ -23,6 +23,8 @@ namespace RogueNinjaChase.Player.View
         float _standingHeight;
         float _standingCenterY;
         bool _crouching;
+
+        public bool IsCrouching => _crouching;
 
         public Vector3 Forward => Aim.forward;
         public Vector3 Right => Aim.right;
