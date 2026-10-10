@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace RogueNinjaChase.Player
+namespace RogueNinjaChase.Player.Model
 {
     public sealed class PlayerMotorModel : IPlayerMotorModel
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RogueNinjaChase.Player
+namespace RogueNinjaChase.Player.View
 {
     public interface IPlayerMotorView
     {

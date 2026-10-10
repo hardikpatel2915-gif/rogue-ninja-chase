@@ -1,4 +1,6 @@
-namespace RogueNinjaChase.Player
+using RogueNinjaChase.Player.Model;
+
+namespace RogueNinjaChase.Player.Input
 {
     public sealed class IdleMoveInputSource : IMoveInputSource
     {

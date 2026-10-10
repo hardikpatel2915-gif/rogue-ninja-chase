@@ -1,6 +1,10 @@
+using RogueNinjaChase.Player.Aim;
+using RogueNinjaChase.Player.Input;
+using RogueNinjaChase.Player.Model;
+using RogueNinjaChase.Player.Presenter;
 using UnityEngine;
 
-namespace RogueNinjaChase.Player
+namespace RogueNinjaChase.Player.View
 {
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(CapsuleCollider))]

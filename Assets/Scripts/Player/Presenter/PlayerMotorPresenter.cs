@@ -1,6 +1,10 @@
 using System;
+using RogueNinjaChase.Player.Aim;
+using RogueNinjaChase.Player.Input;
+using RogueNinjaChase.Player.Model;
+using RogueNinjaChase.Player.View;
 
-namespace RogueNinjaChase.Player
+namespace RogueNinjaChase.Player.Presenter
 {
     public sealed class PlayerMotorPresenter
     {
