@@ -32,6 +32,7 @@ namespace RogueNinjaChase.Player.Input
 
         void OnDisable()
         {
+            // Disable this action only. Disabling the map would stop movement too.
             if (_camera != null)
                 _camera.Disable();
         }

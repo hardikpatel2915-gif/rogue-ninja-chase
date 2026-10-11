@@ -6,6 +6,9 @@ using RogueNinjaChase.Player.View;
 
 namespace RogueNinjaChase.Player.Presenter
 {
+    /// <summary>
+    /// One tick: read input, ask the model, write the view. No Unity types of its own.
+    /// </summary>
     public sealed class PlayerMotorPresenter
     {
         readonly IPlayerMotorModel _model;

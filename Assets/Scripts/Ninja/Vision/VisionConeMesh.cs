@@ -16,11 +16,16 @@ namespace RogueNinjaChase.Ninja.Vision
 
         [SerializeField] Material _material;
 
+        static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
+
         Mesh _mesh;
         MeshFilter _filter;
         MeshRenderer _renderer;
         Vector3[] _vertices;
         readonly RaycastHit[] _spokeHits = new RaycastHit[8];
+        MaterialPropertyBlock _colorBlock;
+        Color _tint;
+        bool _hasTint;
 
         void Awake()
         {
@@ -42,6 +47,19 @@ namespace RogueNinjaChase.Ninja.Vision
             _mesh.SetVertices(_vertices);
             _mesh.SetTriangles(BuildTriangles(), 0);
             _filter.sharedMesh = _mesh;
+            _colorBlock = new MaterialPropertyBlock();
+        }
+
+        public void SetColor(Color color)
+        {
+            if (_renderer == null || (_hasTint && _tint == color))
+                return;
+
+            _hasTint = true;
+            _tint = color;
+            _renderer.GetPropertyBlock(_colorBlock);
+            _colorBlock.SetColor(BaseColorId, color);
+            _renderer.SetPropertyBlock(_colorBlock);
         }
 
         public void Show(

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace RogueNinjaChase.Player.Model
 {
+    /// <summary>
+    /// Camera-relative planar velocity. Crouch wins over sprint. No physics here.
+    /// </summary>
     public sealed class PlayerMotorModel : IPlayerMotorModel
     {
         const float DirectionEpsilonSqr = 0.0001f; // (0.01 * 0.01)
@@ -32,6 +35,7 @@ namespace RogueNinjaChase.Player.Model
             Vector3 wish = right * input.Strafe + forward * input.Forward;
 
             float wishSqr = wish.sqrMagnitude;
+            // A diagonal stick must not move faster than walking straight.
             if (wishSqr > 1f)
                 wish /= Mathf.Sqrt(wishSqr);
 

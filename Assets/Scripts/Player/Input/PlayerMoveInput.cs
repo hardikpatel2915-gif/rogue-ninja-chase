@@ -4,6 +4,9 @@ using UnityEngine.InputSystem;
 
 namespace RogueNinjaChase.Player.Input
 {
+    /// <summary>
+    /// Owns the Player action map. Look and camera mode only enable their own actions.
+    /// </summary>
     public sealed class PlayerMoveInput : MonoBehaviour, IMoveInputSource
     {
         [SerializeField] InputActionAsset _actions;

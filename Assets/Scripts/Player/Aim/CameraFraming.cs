@@ -1,5 +1,8 @@
 namespace RogueNinjaChase.Player.Aim
 {
+    /// <summary>
+    /// Shoulder sits to the right and looks ahead. Follow is centered, higher, and tilted down.
+    /// </summary>
     public readonly struct CameraFraming
     {
         public static readonly CameraFraming Shoulder = new CameraFraming(1.6f, 0.45f, 0f, 3.5f, 0f);

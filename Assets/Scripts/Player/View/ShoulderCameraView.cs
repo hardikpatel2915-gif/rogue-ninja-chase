@@ -7,6 +7,9 @@ using UnityEngine.InputSystem;
 namespace RogueNinjaChase.Player.View
 {
     [RequireComponent(typeof(Rigidbody))]
+    /// <summary>
+    /// Yaw turns the body. Pitch stays on the camera. V switches shoulder and follow framing.
+    /// </summary>
     public sealed class ShoulderCameraView : MonoBehaviour
     {
         [SerializeField] InputActionAsset _actions;

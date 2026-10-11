@@ -27,6 +27,7 @@ namespace RogueNinjaChase.Ninja.Vision
         float _cachedAngle = float.NaN;
 
         public bool CanSeePlayer { get; private set; }
+        public Transform Target => _target;
 
         void Awake()
         {

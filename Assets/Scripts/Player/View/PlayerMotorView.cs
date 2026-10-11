@@ -8,6 +8,9 @@ namespace RogueNinjaChase.Player.View
 {
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(CapsuleCollider))]
+    /// <summary>
+    /// Writes planar velocity and keeps gravity. Yaw stays free for the camera.
+    /// </summary>
     public sealed class PlayerMotorView : MonoBehaviour, IPlayerMotorView, IAimSource, IPlayerStance
     {
         const float CrouchHeightScale = 0.5f;
@@ -35,6 +38,7 @@ namespace RogueNinjaChase.Player.View
         {
             _body = GetComponent<Rigidbody>();
             _capsule = GetComponent<CapsuleCollider>();
+            // Pitch and roll stay frozen. Yaw is free so mouse look can turn the body.
             _body.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             _body.interpolation = RigidbodyInterpolation.Interpolate;
 
@@ -59,6 +63,7 @@ namespace RogueNinjaChase.Player.View
             Vector3 velocity = _body.linearVelocity;
             velocity.x = planarVelocity.x;
             velocity.z = planarVelocity.z;
+            // Leave Y so gravity is not replaced every physics step.
             _body.linearVelocity = velocity;
         }
 
@@ -72,6 +77,7 @@ namespace RogueNinjaChase.Player.View
             _capsule.height = height;
 
             Vector3 center = _capsule.center;
+            // Drop the center by half the lost height so the feet stay on the floor.
             center.y = crouching
                 ? _standingCenterY - (_standingHeight - height) * 0.5f
                 : _standingCenterY;

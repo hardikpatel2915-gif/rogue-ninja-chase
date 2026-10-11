@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace RogueNinjaChase.Player.Aim
 {
+    /// <summary>
+    /// Mouse look in degrees. Positive mouse Y looks up, so pitch is subtracted.
+    /// </summary>
     public sealed class ShoulderCameraModel : IShoulderCameraModel
     {
         readonly float _sensitivity;
