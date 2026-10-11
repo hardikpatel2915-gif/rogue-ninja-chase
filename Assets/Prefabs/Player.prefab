@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 1000000000000007}
   - component: {fileID: 1000000000000008}
   - component: {fileID: 1000000000000009}
+  - component: {fileID: 1000000000000010}
+  - component: {fileID: 1000000000000011}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -162,6 +164,40 @@ MonoBehaviour:
   _sensitivity: 0.12
   _minPitch: -35
   _maxPitch: 55
+--- !u!114 &1000000000000010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000000000000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c8f1a6e9b2d4f70a5e4c8d1b7a09362, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RogueNinjaChase.Runtime::RogueNinjaChase.Player.Input.PlayerInteractInput
+  _actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  _reach: 1.5
+--- !u!114 &1000000000000011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000000000000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e4b2c9a1d6f4a83b0e5c8d3f1a64720, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RogueNinjaChase.Runtime::RogueNinjaChase.Combat.DistractionLoadout
+  _actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  _projectileMaterial: {fileID: 2100000, guid: b28cbbc53cfac4d668da9e5eada0b39a, type: 2}
+  _smokeMaterial: {fileID: 2100000, guid: a8c4e1d27b6f4a90b3c5d8e0f1a29470, type: 2}
+  _capacity: 4
+  _speed: 14
+  _projectileLife: 2
+  _smokeLife: 1.6
+  _noiseRadius: 8
 --- !u!1001 &1000000000000200
 PrefabInstance:
   m_ObjectHideFlags: 0

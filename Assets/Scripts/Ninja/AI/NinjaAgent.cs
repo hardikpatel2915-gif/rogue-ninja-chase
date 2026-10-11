@@ -1,3 +1,4 @@
+using RogueNinjaChase.Mission;
 using RogueNinjaChase.Ninja.Vision;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace RogueNinjaChase.Ninja.AI
         [SerializeField] float _waitTime = 2f;
         [SerializeField] float _patrolSpeed = 1.6f;
         [SerializeField] float _chaseSpeed = 3.4f;
+        [SerializeField] float _catchDistance = 1.25f;
 
         NinjaVision _vision;
         NinjaMotor _motor;
@@ -23,6 +25,8 @@ namespace RogueNinjaChase.Ninja.AI
         bool _arrived;
         bool _noisePending;
         Vector3 _noisePosition;
+        float _catchSqr;
+        MissionFlow _mission;
 
         public NinjaState State => _brain.State;
 
@@ -47,6 +51,12 @@ namespace RogueNinjaChase.Ninja.AI
                 _route = gameObject.AddComponent<PatrolRoute>();
             _route.Capture(transform.position);
             _brain = new NinjaBrainModel(_confirmTime, _loseSightTime, _waitTime, _patrolSpeed, _chaseSpeed);
+            _catchSqr = _catchDistance * _catchDistance;
+        }
+
+        void Start()
+        {
+            _mission = MissionFlow.Instance;
         }
 
         void FixedUpdate()
@@ -60,6 +70,19 @@ namespace RogueNinjaChase.Ninja.AI
             NinjaOrder order = _brain.Tick(Time.fixedDeltaTime, in sense);
             _arrived = Move(order, playerPosition);
             Tint(order.State);
+            TryCatch(order.State, target, playerPosition);
+        }
+
+        void TryCatch(NinjaState state, Transform target, Vector3 playerPosition)
+        {
+            // Patrol and investigate can pass close without failing the run.
+            if (state != NinjaState.Chase || target == null || _mission == null)
+                return;
+
+            Vector3 delta = playerPosition - transform.position;
+            delta.y = 0f;
+            if (delta.sqrMagnitude <= _catchSqr)
+                _mission.TryCatch();
         }
 
         bool Move(NinjaOrder order, Vector3 playerPosition)

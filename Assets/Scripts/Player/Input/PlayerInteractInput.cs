@@ -1,0 +1,80 @@
+using RogueNinjaChase.Mission;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+namespace RogueNinjaChase.Player.Input
+{
+    /// <summary>
+    /// Enables only Interact, so turning it off does not stop movement.
+    /// </summary>
+    public sealed class PlayerInteractInput : MonoBehaviour
+    {
+        const int HitCapacity = 8;
+
+        [SerializeField] InputActionAsset _actions;
+        [SerializeField] float _reach = 1.5f;
+
+        readonly Collider[] _hits = new Collider[HitCapacity];
+        InputAction _interact;
+
+        public void SetActions(InputActionAsset actions)
+        {
+            if (_actions == null)
+                _actions = actions;
+            Resolve();
+            if (isActiveAndEnabled && _interact != null)
+                _interact.Enable();
+        }
+
+        void Awake()
+        {
+            Resolve();
+        }
+
+        void OnEnable()
+        {
+            if (_interact != null)
+                _interact.Enable();
+        }
+
+        void OnDisable()
+        {
+            if (_interact != null)
+                _interact.Disable();
+        }
+
+        void Update()
+        {
+            if (_interact == null || !_interact.WasPressedThisFrame())
+                return;
+
+            // The overlap runs on the press, not every frame.
+
+            int count = Physics.OverlapSphereNonAlloc(
+                transform.position + Vector3.up,
+                _reach,
+                _hits,
+                ~0,
+                QueryTriggerInteraction.Collide);
+
+            for (int i = 0; i < count; i++)
+            {
+                DossierPickup dossier = _hits[i].GetComponent<DossierPickup>();
+                if (dossier != null && dossier.TryInteract())
+                    return;
+            }
+        }
+
+        void Resolve()
+        {
+            if (_interact != null || _actions == null)
+                return;
+
+            InputActionMap map = _actions.FindActionMap("Player", false);
+            if (map == null)
+                return;
+
+            _interact = map.FindAction("Interact", false);
+        }
+    }
+}

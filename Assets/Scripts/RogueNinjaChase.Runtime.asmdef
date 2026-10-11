@@ -2,7 +2,8 @@
     "name": "RogueNinjaChase.Runtime",
     "rootNamespace": "RogueNinjaChase",
     "references": [
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

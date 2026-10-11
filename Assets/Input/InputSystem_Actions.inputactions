@@ -38,7 +38,7 @@
                     "id": "852140f2-7766-474d-8707-702459ba45f3",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
@@ -90,6 +90,15 @@
                     "name": "Camera",
                     "type": "Button",
                     "id": "a4c8e1d2-7b6f-4e0a-9c3d-5f7a1b2e4d60",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Throw",
+                    "type": "Button",
+                    "id": "c1d4e8a2-6b3f-4d70-9a15-e2c7b8f04316",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -490,6 +499,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d8a2f6c1-4e7b-4a93-b5d0-1c6e9f3a8472",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Throw",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
