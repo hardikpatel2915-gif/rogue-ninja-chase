@@ -66,11 +66,16 @@ namespace RogueNinjaChase.Player.View
             float pivotYaw = 0f;
             if (faceMovement)
             {
-                // The body turns under the camera. This keeps the view on the mouse yaw.
-                pivotYaw = Mathf.DeltaAngle(_body.rotation.eulerAngles.y, pose.YawDegrees);
+                Vector3 flatForward = _body.transform.forward;
+                flatForward.y = 0f;
+                float bodyYaw = Mathf.Atan2(flatForward.x, flatForward.z) * Mathf.Rad2Deg;
+                pivotYaw = Mathf.DeltaAngle(bodyYaw, pose.YawDegrees);
             }
 
-            _pitchPivot.localRotation = Quaternion.Euler(pose.PitchDegrees, pivotYaw, 0f);
+            // Yaw first, then pitch. Euler(pitch, yaw, 0) mixes them and the far camera shakes while the body turns.
+            _pitchPivot.localRotation =
+                Quaternion.AngleAxis(pivotYaw, Vector3.up) *
+                Quaternion.AngleAxis(pose.PitchDegrees, Vector3.right);
             _pitchPivot.localPosition = new Vector3(0f, framing.PivotHeight, 0f);
             _camera.localRotation = Quaternion.Euler(framing.LookDownDegrees, 0f, 0f);
             _camera.localPosition = new Vector3(framing.Side, framing.Height, -framing.Distance);
@@ -132,9 +137,12 @@ namespace RogueNinjaChase.Player.View
             if (_pitchPivot == null)
             {
                 var pivotObject = new GameObject("CameraPivot");
-                pivotObject.transform.SetParent(transform, false);
                 _pitchPivot = pivotObject.transform;
             }
+
+            // Stay on the player root. The run correction moves the model, and the camera must not follow it.
+            if (_pitchPivot.parent != transform)
+                _pitchPivot.SetParent(transform, false);
 
             if (_camera != null)
                 return;

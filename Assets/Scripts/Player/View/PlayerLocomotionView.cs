@@ -1,10 +1,11 @@
+using RogueNinjaChase.Animation;
 using RogueNinjaChase.Player.Model;
 using UnityEngine;
 
 namespace RogueNinjaChase.Player.View
 {
     /// <summary>
-    /// Plays the clip it is given. Root motion stays off.
+    /// Plays the clip it is given.
     /// </summary>
     public sealed class PlayerLocomotionView : MonoBehaviour, IPlayerLocomotionView
     {
@@ -17,6 +18,10 @@ namespace RogueNinjaChase.Player.View
         static readonly int CrouchWalk = Animator.StringToHash("CrouchWalk");
         static readonly int Jump = Animator.StringToHash("Jump");
         static readonly int Throw = Animator.StringToHash("Throw");
+        static readonly int StrafeLeft = Animator.StringToHash("StrafeLeft");
+        static readonly int StrafeRight = Animator.StringToHash("StrafeRight");
+        static readonly int StrafeLeftSprint = Animator.StringToHash("StrafeLeftSprint");
+        static readonly int StrafeRightSprint = Animator.StringToHash("StrafeRightSprint");
 
         [SerializeField] RuntimeAnimatorController _controller;
 
@@ -41,7 +46,7 @@ namespace RogueNinjaChase.Player.View
             if (_animator == null)
                 return;
 
-            _animator.applyRootMotion = false;
+            DiscardRootMotion.Attach(_animator);
             if (_controller != null)
                 _animator.runtimeAnimatorController = _controller;
         }
@@ -71,6 +76,14 @@ namespace RogueNinjaChase.Player.View
                     return Jump;
                 case LocomotionClip.Throw:
                     return Throw;
+                case LocomotionClip.StrafeLeft:
+                    return StrafeLeft;
+                case LocomotionClip.StrafeRight:
+                    return StrafeRight;
+                case LocomotionClip.StrafeLeftSprint:
+                    return StrafeLeftSprint;
+                case LocomotionClip.StrafeRightSprint:
+                    return StrafeRightSprint;
                 default:
                     return Idle;
             }

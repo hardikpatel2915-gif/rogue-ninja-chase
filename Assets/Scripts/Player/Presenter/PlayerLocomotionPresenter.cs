@@ -26,7 +26,7 @@ namespace RogueNinjaChase.Player.Presenter
             _replay = true;
         }
 
-        public void Tick()
+        public void Tick(bool aimStrafe = false)
         {
             if (_motor == null || _view == null)
                 return;
@@ -34,12 +34,22 @@ namespace RogueNinjaChase.Player.Presenter
             if (_throwing && !_view.ThrowInTransition && _view.InThrowState && _view.ThrowNormalizedTime >= 1f)
                 _throwing = false;
 
+            StrafeSide strafe = StrafeSide.None;
+            if (aimStrafe)
+            {
+                strafe = LocomotionSelect.Side(
+                    _motor.PlanarVelocity,
+                    _motor.BodyForward,
+                    _motor.BodyRight);
+            }
+
             LocomotionClip clip = LocomotionSelect.Select(
                 _motor.IsCrouching,
                 _motor.PlanarVelocity.magnitude,
                 _motor.WalkSpeed,
                 _motor.IsJumping,
-                _throwing);
+                _throwing,
+                strafe);
 
             if (!_replay && clip == _current)
                 return;

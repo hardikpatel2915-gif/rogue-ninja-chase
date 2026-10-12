@@ -11,6 +11,7 @@ namespace RogueNinjaChase.Player.Presenter
     public sealed class PlayerLocomotion : MonoBehaviour
     {
         PlayerLocomotionPresenter _presenter;
+        ShoulderCamera _camera;
 
         public void NotifyThrow()
         {
@@ -23,11 +24,13 @@ namespace RogueNinjaChase.Player.Presenter
             _presenter = new PlayerLocomotionPresenter(
                 GetComponent<PlayerLocomotionView>(),
                 GetComponent<PlayerMotorView>());
+            _camera = GetComponent<ShoulderCamera>();
         }
 
         void LateUpdate()
         {
-            _presenter.Tick();
+            bool aimStrafe = _camera != null && _camera.Aiming;
+            _presenter.Tick(aimStrafe);
         }
     }
 }

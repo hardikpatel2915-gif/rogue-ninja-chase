@@ -34,6 +34,8 @@ namespace RogueNinjaChase.Player.View
         public float StandingCenterY { get; private set; }
         public float VerticalSpeed => _body.linearVelocity.y;
         public Vector3 PlanarVelocity { get; private set; }
+        public Vector3 BodyForward => transform.forward;
+        public Vector3 BodyRight => transform.right;
         public bool IsJumping => _jumping;
         public bool IsCrouching => _crouching;
 
