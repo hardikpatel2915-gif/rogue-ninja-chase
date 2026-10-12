@@ -6,6 +6,8 @@ namespace RogueNinjaChase.Mission
     public sealed class MissionFlow : MonoBehaviour
     {
         [SerializeField] float _restartDelay = 2.5f;
+        [SerializeField] MissionHud _hudPrefab;
+        [SerializeField] ControlHints _hintsPrefab;
 
         readonly MissionModel _model = new MissionModel();
         MissionHud _hud;
@@ -18,14 +20,16 @@ namespace RogueNinjaChase.Mission
         void Awake()
         {
             Instance = this;
-            _hud = GetComponent<MissionHud>();
-            if (_hud == null)
-                _hud = gameObject.AddComponent<MissionHud>();
+            if (_hudPrefab != null)
+                _hud = Instantiate(_hudPrefab);
+            if (_hintsPrefab != null)
+                Instantiate(_hintsPrefab);
         }
 
         void Start()
         {
-            _hud.Show(_model.Phase);
+            if (_hud != null)
+                _hud.Show(_model.Phase);
         }
 
         void Update()
@@ -64,7 +68,8 @@ namespace RogueNinjaChase.Mission
             if (!changed)
                 return false;
 
-            _hud.Show(_model.Phase);
+            if (_hud != null)
+                _hud.Show(_model.Phase);
             if (_model.IsComplete)
                 Time.timeScale = 0f;
             return true;

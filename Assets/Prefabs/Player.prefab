@@ -91,10 +91,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.35
-  m_Height: 0.7449241
+  m_Radius: 0.30113432
+  m_Height: 0.61344403
   m_Direction: 1
-  m_Center: {x: 0, y: 0.37246206, z: 0}
+  m_Center: {x: -0.00000011345816, y: 0.30331478, z: -0.003146518}
 --- !u!114 &1000000000000005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,8 +107,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5acfd97d8a2f484d81db0dfa58e842da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: RogueNinjaChase.Runtime::RogueNinjaChase.Player.View.PlayerMotorView
-  _walkSpeed: 0.7
-  _sprintSpeed: 1.5
+  _walkSpeed: 1
+  _sprintSpeed: 2.1
   _crouchSpeed: 0.45
   _jumpSpeed: 3
   _aim: {fileID: 0}

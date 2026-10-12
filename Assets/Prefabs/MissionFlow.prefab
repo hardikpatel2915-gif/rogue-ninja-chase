@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5000000000000002}
   - component: {fileID: 5000000000000003}
   m_Layer: 0
-  m_Name: Mission
+  m_Name: MissionFlow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,3 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: RogueNinjaChase.Runtime::RogueNinjaChase.Mission.MissionFlow
   _restartDelay: 2.5
+  _hudPrefab: {fileID: 8200000000000005, guid: 9e4b7c2a1d6f4e83b0a5c8d3f1a64720, type: 3}
+  _hintsPrefab: {fileID: 8100000000000005, guid: 7b2e9c14a6d84f51b0e3c7a5d8f19402, type: 3}

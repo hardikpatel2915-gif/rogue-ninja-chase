@@ -9,7 +9,7 @@ namespace RogueNinjaChase.Player.Input
     /// </summary>
     public sealed class PlayerInteractInput : MonoBehaviour
     {
-        const int HitCapacity = 8;
+        const int HitCapacity = 32;
 
         [SerializeField] InputActionAsset _actions;
         [SerializeField] float _reach = 1.5f;
@@ -50,8 +50,9 @@ namespace RogueNinjaChase.Player.Input
 
             // The overlap runs on the press, not every frame.
 
+            Vector3 origin = transform.position + Vector3.up * 0.4f;
             int count = Physics.OverlapSphereNonAlloc(
-                transform.position + Vector3.up,
+                origin,
                 _reach,
                 _hits,
                 ~0,
@@ -59,7 +60,7 @@ namespace RogueNinjaChase.Player.Input
 
             for (int i = 0; i < count; i++)
             {
-                DossierPickup dossier = _hits[i].GetComponent<DossierPickup>();
+                DossierPickup dossier = _hits[i].GetComponentInParent<DossierPickup>();
                 if (dossier != null && dossier.TryInteract())
                     return;
             }

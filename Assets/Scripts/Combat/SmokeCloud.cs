@@ -14,12 +14,20 @@ namespace RogueNinjaChase.Combat
         public void Bind(DistractionLoadout owner, Material material, float life)
         {
             _owner = owner;
+            // A new system starts on its own. Duration can only be set once it is fully stopped.
+            bool active = gameObject.activeSelf;
+            if (active)
+                gameObject.SetActive(false);
+
             _system = GetComponent<ParticleSystem>();
             if (_system == null)
                 _system = gameObject.AddComponent<ParticleSystem>();
 
-            Configure(_system, material, life);
             _system.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            Configure(_system, material, life);
+
+            if (active)
+                gameObject.SetActive(true);
         }
 
         public void Play(Vector3 groundPosition)
