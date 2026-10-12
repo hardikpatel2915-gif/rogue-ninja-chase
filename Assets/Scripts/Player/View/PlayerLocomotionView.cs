@@ -11,28 +11,39 @@ namespace RogueNinjaChase.Player.View
     {
         const float Fade = 0.12f;
 
-        static readonly int Idle = Animator.StringToHash("Idle");
-        static readonly int Walk = Animator.StringToHash("Walk");
-        static readonly int Sprint = Animator.StringToHash("Sprint");
-        static readonly int CrouchIdle = Animator.StringToHash("CrouchIdle");
-        static readonly int CrouchWalk = Animator.StringToHash("CrouchWalk");
-        static readonly int Jump = Animator.StringToHash("Jump");
-        static readonly int Throw = Animator.StringToHash("Throw");
-        static readonly int StrafeLeft = Animator.StringToHash("StrafeLeft");
-        static readonly int StrafeRight = Animator.StringToHash("StrafeRight");
-        static readonly int StrafeLeftSprint = Animator.StringToHash("StrafeLeftSprint");
-        static readonly int StrafeRightSprint = Animator.StringToHash("StrafeRightSprint");
-
+        [SerializeField] string _idle = "Idle";
+        [SerializeField] string _walk = "Walk";
+        [SerializeField] string _sprint = "Sprint";
+        [SerializeField] string _crouchIdle = "CrouchIdle";
+        [SerializeField] string _crouchWalk = "CrouchWalk";
+        [SerializeField] string _jump = "Jump";
+        [SerializeField] string _throw = "Throw";
+        [SerializeField] string _strafeLeft = "StrafeLeft";
+        [SerializeField] string _strafeRight = "StrafeRight";
+        [SerializeField] string _strafeLeftSprint = "StrafeLeftSprint";
+        [SerializeField] string _strafeRightSprint = "StrafeRightSprint";
+        [SerializeField] string _modelName = "Model";
         [SerializeField] RuntimeAnimatorController _controller;
 
         Animator _animator;
+        int _idleHash;
+        int _walkHash;
+        int _sprintHash;
+        int _crouchIdleHash;
+        int _crouchWalkHash;
+        int _jumpHash;
+        int _throwHash;
+        int _strafeLeftHash;
+        int _strafeRightHash;
+        int _strafeLeftSprintHash;
+        int _strafeRightSprintHash;
 
         public bool ThrowInTransition => _animator != null && _animator.IsInTransition(0);
 
         public bool InThrowState =>
             _animator != null
             && !_animator.IsInTransition(0)
-            && _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == Throw;
+            && _animator.GetCurrentAnimatorStateInfo(0).shortNameHash == _throwHash;
 
         public float ThrowNormalizedTime =>
             InThrowState ? _animator.GetCurrentAnimatorStateInfo(0).normalizedTime : 0f;
@@ -40,9 +51,10 @@ namespace RogueNinjaChase.Player.View
         void Awake()
         {
             _animator = GetComponentInChildren<Animator>(true);
-            Transform model = transform.Find("Model");
+            Transform model = transform.Find(_modelName);
             if (_animator == null && model != null)
                 _animator = model.gameObject.AddComponent<Animator>();
+            CacheStates();
             if (_animator == null)
                 return;
 
@@ -60,32 +72,47 @@ namespace RogueNinjaChase.Player.View
             _animator.CrossFadeInFixedTime(Hash(clip), Fade, 0, 0f);
         }
 
-        static int Hash(LocomotionClip clip)
+        void CacheStates()
+        {
+            _idleHash = Animator.StringToHash(_idle);
+            _walkHash = Animator.StringToHash(_walk);
+            _sprintHash = Animator.StringToHash(_sprint);
+            _crouchIdleHash = Animator.StringToHash(_crouchIdle);
+            _crouchWalkHash = Animator.StringToHash(_crouchWalk);
+            _jumpHash = Animator.StringToHash(_jump);
+            _throwHash = Animator.StringToHash(_throw);
+            _strafeLeftHash = Animator.StringToHash(_strafeLeft);
+            _strafeRightHash = Animator.StringToHash(_strafeRight);
+            _strafeLeftSprintHash = Animator.StringToHash(_strafeLeftSprint);
+            _strafeRightSprintHash = Animator.StringToHash(_strafeRightSprint);
+        }
+
+        int Hash(LocomotionClip clip)
         {
             switch (clip)
             {
                 case LocomotionClip.Walk:
-                    return Walk;
+                    return _walkHash;
                 case LocomotionClip.Sprint:
-                    return Sprint;
+                    return _sprintHash;
                 case LocomotionClip.CrouchIdle:
-                    return CrouchIdle;
+                    return _crouchIdleHash;
                 case LocomotionClip.CrouchWalk:
-                    return CrouchWalk;
+                    return _crouchWalkHash;
                 case LocomotionClip.Jump:
-                    return Jump;
+                    return _jumpHash;
                 case LocomotionClip.Throw:
-                    return Throw;
+                    return _throwHash;
                 case LocomotionClip.StrafeLeft:
-                    return StrafeLeft;
+                    return _strafeLeftHash;
                 case LocomotionClip.StrafeRight:
-                    return StrafeRight;
+                    return _strafeRightHash;
                 case LocomotionClip.StrafeLeftSprint:
-                    return StrafeLeftSprint;
+                    return _strafeLeftSprintHash;
                 case LocomotionClip.StrafeRightSprint:
-                    return StrafeRightSprint;
+                    return _strafeRightSprintHash;
                 default:
-                    return Idle;
+                    return _idleHash;
             }
         }
     }

@@ -6,6 +6,8 @@ namespace RogueNinjaChase.Player.Input
     public sealed class PlayerCameraInput : MonoBehaviour
     {
         [SerializeField] InputActionAsset _actions;
+        [SerializeField] string _mapName = "Player";
+        [SerializeField] string _actionName = "Camera";
 
         InputAction _camera;
 

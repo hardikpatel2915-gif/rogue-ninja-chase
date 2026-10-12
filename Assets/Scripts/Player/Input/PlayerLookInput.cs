@@ -6,6 +6,8 @@ namespace RogueNinjaChase.Player.Input
     public sealed class PlayerLookInput : MonoBehaviour, ILookSource
     {
         [SerializeField] InputActionAsset _actions;
+        [SerializeField] string _mapName = "Player";
+        [SerializeField] string _lookName = "Look";
 
         InputAction _look;
 

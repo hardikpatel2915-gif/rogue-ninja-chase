@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace RogueNinjaChase.Mission
 {
-    public sealed class MissionFlow : MonoBehaviour
+    public sealed class MissionFlow : MonoBehaviour, IMission
     {
         [SerializeField] float _restartDelay = 2.5f;
         [SerializeField] MissionHud _hudPrefab;
@@ -14,12 +14,10 @@ namespace RogueNinjaChase.Mission
         float _restartTimer;
         bool _reloading;
 
-        public static MissionFlow Instance { get; private set; }
         public MissionPhase Phase => _model.Phase;
 
         void Awake()
         {
-            Instance = this;
             if (_hudPrefab != null)
                 _hud = Instantiate(_hudPrefab);
             if (_hintsPrefab != null)
@@ -73,12 +71,6 @@ namespace RogueNinjaChase.Mission
             if (_model.IsComplete)
                 Time.timeScale = 0f;
             return true;
-        }
-
-        void OnDestroy()
-        {
-            if (Instance == this)
-                Instance = null;
         }
     }
 }

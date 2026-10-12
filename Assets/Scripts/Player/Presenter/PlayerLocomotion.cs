@@ -11,12 +11,18 @@ namespace RogueNinjaChase.Player.Presenter
     public sealed class PlayerLocomotion : MonoBehaviour
     {
         PlayerLocomotionPresenter _presenter;
+        PlayerMotor _motor;
         ShoulderCamera _camera;
+
+        public bool Throwing => _presenter != null && _presenter.Throwing;
 
         public void NotifyThrow()
         {
             if (_presenter != null)
                 _presenter.NotifyThrow();
+            // The motor's next physics step is too late. The sprint velocity is already on the body.
+            if (_motor != null)
+                _motor.Stop();
         }
 
         void Awake()
@@ -24,6 +30,7 @@ namespace RogueNinjaChase.Player.Presenter
             _presenter = new PlayerLocomotionPresenter(
                 GetComponent<PlayerLocomotionView>(),
                 GetComponent<PlayerMotorView>());
+            _motor = GetComponent<PlayerMotor>();
             _camera = GetComponent<ShoulderCamera>();
         }
 

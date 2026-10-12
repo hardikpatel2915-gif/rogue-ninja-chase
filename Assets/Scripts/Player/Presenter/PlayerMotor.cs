@@ -13,9 +13,17 @@ namespace RogueNinjaChase.Player.Presenter
     public sealed class PlayerMotor : MonoBehaviour
     {
         PlayerMotorPresenter _presenter;
+        PlayerLocomotion _locomotion;
+
+        public void Stop()
+        {
+            if (_presenter != null)
+                _presenter.Stop();
+        }
 
         void Awake()
         {
+            _locomotion = GetComponent<PlayerLocomotion>();
             PlayerMotorView view = GetComponent<PlayerMotorView>();
             IMoveInputSource input = GetComponent<IMoveInputSource>();
             if (input == null)
@@ -31,7 +39,8 @@ namespace RogueNinjaChase.Player.Presenter
 
         void FixedUpdate()
         {
-            _presenter.Tick(Time.fixedDeltaTime);
+            bool held = _locomotion != null && _locomotion.Throwing;
+            _presenter.Tick(Time.fixedDeltaTime, held);
         }
     }
 }

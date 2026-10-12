@@ -20,6 +20,8 @@ namespace RogueNinjaChase.Player.Presenter
             _motor = motor;
         }
 
+        public bool Throwing => _throwing;
+
         public void NotifyThrow()
         {
             _throwing = true;

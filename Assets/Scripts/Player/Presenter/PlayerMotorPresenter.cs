@@ -3,6 +3,7 @@ using RogueNinjaChase.Player.Aim;
 using RogueNinjaChase.Player.Input;
 using RogueNinjaChase.Player.Model;
 using RogueNinjaChase.Player.View;
+using UnityEngine;
 
 namespace RogueNinjaChase.Player.Presenter
 {
@@ -28,10 +29,15 @@ namespace RogueNinjaChase.Player.Presenter
             _aim = aim ?? throw new ArgumentNullException(nameof(aim));
         }
 
-        public void Tick(float deltaTime)
+        public void Stop()
+        {
+            _view.SetPlanarVelocity(Vector3.zero);
+        }
+
+        public void Tick(float deltaTime, bool held = false)
         {
             MoveInput input = _input.Read();
-            MotorOutput output = _model.Evaluate(in input, _aim.Forward, _aim.Right);
+            MotorOutput output = _model.Evaluate(in input, _aim.Forward, _aim.Right, held);
             _view.SetPlanarVelocity(output.PlanarVelocity);
             CapsulePose pose = CapsulePose.From(
                 output.IsCrouching,

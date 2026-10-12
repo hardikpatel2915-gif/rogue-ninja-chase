@@ -4,7 +4,7 @@ using UnityEngine;
 namespace RogueNinjaChase.Player.Model
 {
     /// <summary>
-    /// Camera-relative planar velocity. Crouch wins over sprint and blocks jump. No physics here.
+    /// Camera-relative planar velocity. Crouch wins over sprint and blocks jump. A throw holds the body still. No physics here.
     /// </summary>
     public sealed class PlayerMotorModel : IPlayerMotorModel
     {
@@ -45,8 +45,11 @@ namespace RogueNinjaChase.Player.Model
             _jumpLatchMax = jumpLatchMax;
         }
 
-        public MotorOutput Evaluate(in MoveInput input, Vector3 cameraForward, Vector3 cameraRight)
+        public MotorOutput Evaluate(in MoveInput input, Vector3 cameraForward, Vector3 cameraRight, bool held = false)
         {
+            if (held)
+                return new MotorOutput(Vector3.zero, input.Crouch, false);
+
             Vector3 forward = PlanarUnit(cameraForward);
             Vector3 right = PlanarUnit(cameraRight);
             Vector3 wish = right * input.Strafe + forward * input.Forward;

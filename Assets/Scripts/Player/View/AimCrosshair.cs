@@ -1,69 +1,60 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace RogueNinjaChase.Player.View
 {
     /// <summary>
-    /// Four ticks around the center of the screen. Built once, then left alone.
+    /// The assigned sprite sits at the center of the screen. Throw aims through that point.
     /// </summary>
     public sealed class AimCrosshair : MonoBehaviour
     {
-        const float Gap = 6f;
-        const float Length = 10f;
-        const float Thickness = 2f;
+        [SerializeField] RectTransform _mark;
 
-        static Sprite _pixel;
-        GameObject _root;
-
-        public void SetVisible(bool visible)
-        {
-            if (_root != null && _root.activeSelf != visible)
-                _root.SetActive(visible);
-        }
+        Transform _canvasRoot;
 
         void Awake()
         {
-            Sprite pixel = Pixel();
-            var canvasObject = new GameObject("AimCrosshair");
-            _root = canvasObject;
-            var canvas = canvasObject.AddComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvas.sortingOrder = 10;
+            if (_mark == null)
+                return;
 
-            RectTransform root = canvasObject.GetComponent<RectTransform>();
-            CreateTick(root, pixel, new Vector2(-Gap, 0f), new Vector2(Length, Thickness), new Vector2(1f, 0.5f));
-            CreateTick(root, pixel, new Vector2(Gap, 0f), new Vector2(Length, Thickness), new Vector2(0f, 0.5f));
-            CreateTick(root, pixel, new Vector2(0f, Gap), new Vector2(Thickness, Length), new Vector2(0.5f, 0f));
-            CreateTick(root, pixel, new Vector2(0f, -Gap), new Vector2(Thickness, Length), new Vector2(0.5f, 1f));
+            // A child of the player would move and scale with the body. The mark has to stay on the screen.
+            _canvasRoot = _mark.parent;
+            if (_canvasRoot == null)
+                return;
+
+            _canvasRoot.SetParent(null, false);
+            if (_canvasRoot is not RectTransform canvas)
+                return;
+
+            canvas.localScale = Vector3.one;
+            canvas.anchorMin = Vector2.zero;
+            canvas.anchorMax = Vector2.one;
+            canvas.offsetMin = Vector2.zero;
+            canvas.offsetMax = Vector2.zero;
+            canvas.anchoredPosition = Vector2.zero;
         }
 
-        static void CreateTick(RectTransform parent, Sprite pixel, Vector2 position, Vector2 size, Vector2 pivot)
+        void OnDestroy()
         {
-            var tick = new GameObject("Tick");
-            tick.transform.SetParent(parent, false);
-            var image = tick.AddComponent<Image>();
-            image.sprite = pixel;
-            image.color = new Color(1f, 1f, 1f, 0.9f);
-            image.raycastTarget = false;
-
-            RectTransform rect = image.rectTransform;
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.pivot = pivot;
-            rect.anchoredPosition = position;
-            rect.sizeDelta = size;
+            if (_canvasRoot != null)
+                Destroy(_canvasRoot.gameObject);
         }
 
-        static Sprite Pixel()
+        public Vector2 AimScreenPoint
         {
-            if (_pixel != null)
-                return _pixel;
+            get
+            {
+                if (_mark == null)
+                    return new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
 
-            var texture = new Texture2D(1, 1, TextureFormat.RGBA32, false);
-            texture.SetPixel(0, 0, Color.white);
-            texture.Apply();
-            _pixel = Sprite.Create(texture, new Rect(0f, 0f, 1f, 1f), new Vector2(0.5f, 0.5f), 1f);
-            return _pixel;
+                Vector3 point = _mark.position;
+                return new Vector2(point.x, point.y);
+            }
+        }
+
+        public void SetVisible(bool visible)
+        {
+            if (_mark != null && _mark.gameObject.activeSelf != visible)
+                _mark.gameObject.SetActive(visible);
         }
     }
 }

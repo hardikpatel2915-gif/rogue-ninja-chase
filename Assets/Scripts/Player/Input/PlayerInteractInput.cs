@@ -12,6 +12,8 @@ namespace RogueNinjaChase.Player.Input
         const int HitCapacity = 32;
 
         [SerializeField] InputActionAsset _actions;
+        [SerializeField] string _mapName = "Player";
+        [SerializeField] string _actionName = "Interact";
         [SerializeField] float _reach = 1.5f;
 
         readonly Collider[] _hits = new Collider[HitCapacity];
@@ -60,8 +62,8 @@ namespace RogueNinjaChase.Player.Input
 
             for (int i = 0; i < count; i++)
             {
-                DossierPickup dossier = _hits[i].GetComponentInParent<DossierPickup>();
-                if (dossier != null && dossier.TryInteract())
+                IInteractable interactable = _hits[i].GetComponentInParent<IInteractable>();
+                if (interactable != null && interactable.TryInteract())
                     return;
             }
         }

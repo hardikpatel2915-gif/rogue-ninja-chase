@@ -10,6 +10,11 @@ namespace RogueNinjaChase.Player.Input
     public sealed class PlayerMoveInput : MonoBehaviour, IMoveInputSource
     {
         [SerializeField] InputActionAsset _actions;
+        [SerializeField] string _mapName = "Player";
+        [SerializeField] string _moveName = "Move";
+        [SerializeField] string _sprintName = "Sprint";
+        [SerializeField] string _crouchName = "Crouch";
+        [SerializeField] string _jumpName = "Jump";
 
         InputActionMap _playerMap;
         InputAction _move;

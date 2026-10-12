@@ -16,6 +16,7 @@ namespace RogueNinjaChase.Ninja.AI
         [SerializeField] float _probeDistance = 2.8f;
         [SerializeField] float _openDistance = 1.5f;
         [SerializeField] LayerMask _blockers = ~0;
+        [SerializeField] string _modelName = "Model";
 
         readonly RaycastHit[] _hits = new RaycastHit[HitCapacity];
         readonly float[] _clearance = new float[DetourSelect.SampleCount];
@@ -154,7 +155,7 @@ namespace RogueNinjaChase.Ninja.AI
             float height = 0.5f;
             float radius = 0.14f;
             float centerY = 0.25f;
-            Transform model = transform.Find("Model");
+            Transform model = transform.Find(_modelName);
             if (model != null)
             {
                 Renderer[] renderers = model.GetComponentsInChildren<Renderer>();

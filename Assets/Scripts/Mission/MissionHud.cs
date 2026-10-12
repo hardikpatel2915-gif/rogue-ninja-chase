@@ -8,17 +8,19 @@ namespace RogueNinjaChase.Mission
     /// </summary>
     public sealed class MissionHud : MonoBehaviour
     {
-        const string Seek = "Find the chest and collect the dossier";
-        const string Carry = "Exit the building and hand the dossier over at the dock";
-        const string Won = "Dossier secured";
-        const string Lost = "Mission failed";
-        const string CaughtTitle = "CAUGHT";
-        const string SecuredTitle = "SECURED";
         const float BannerDuration = 0.45f;
         const float FpsWindow = 0.5f;
         const int FpsLimit = 240;
 
-        static readonly string[] FpsLabels = BuildFpsLabels();
+        string[] _fpsLabels;
+
+        [SerializeField] string _seek = "Find the chest and collect the dossier";
+        [SerializeField] string _carry = "Exit the building and hand the dossier over at the dock";
+        [SerializeField] string _won = "Dossier secured";
+        [SerializeField] string _lost = "Mission failed";
+        [SerializeField] string _caughtTitleText = "CAUGHT";
+        [SerializeField] string _securedTitleText = "SECURED";
+        [SerializeField] string _fpsSuffix = " FPS";
 
         static readonly Color CaughtTitleColor = new Color(0.95f, 0.22f, 0.18f, 1f);
         static readonly Color SecuredTitleColor = new Color(1f, 0.84f, 0.28f, 1f);
@@ -40,6 +42,7 @@ namespace RogueNinjaChase.Mission
         void Awake()
         {
             _shown = (MissionPhase)(-1);
+            _fpsLabels = BuildFpsLabels(_fpsSuffix);
             if (_caught != null)
                 _caught.SetActive(false);
             if (_caughtPanel != null)
@@ -99,14 +102,14 @@ namespace RogueNinjaChase.Mission
                 return;
 
             _shownFps = fps;
-            _fps.text = FpsLabels[fps];
+            _fps.text = _fpsLabels[fps];
         }
 
-        static string[] BuildFpsLabels()
+        static string[] BuildFpsLabels(string suffix)
         {
             var labels = new string[FpsLimit + 1];
             for (int i = 0; i <= FpsLimit; i++)
-                labels[i] = i + " FPS";
+                labels[i] = i + suffix;
             return labels;
         }
 
@@ -117,19 +120,19 @@ namespace RogueNinjaChase.Mission
 
             _shown = phase;
             if (phase == MissionPhase.Carrying)
-                _objective.text = Carry;
+                _objective.text = _carry;
             else if (phase == MissionPhase.Extracted)
             {
-                _objective.text = Won;
-                PlayBanner(SecuredTitle, SecuredTitleColor);
+                _objective.text = _won;
+                PlayBanner(_securedTitleText, SecuredTitleColor);
             }
             else if (phase == MissionPhase.Caught)
             {
-                _objective.text = Lost;
-                PlayBanner(CaughtTitle, CaughtTitleColor);
+                _objective.text = _lost;
+                PlayBanner(_caughtTitleText, CaughtTitleColor);
             }
             else
-                _objective.text = Seek;
+                _objective.text = _seek;
         }
 
         void PlayBanner(string title, Color titleColor)

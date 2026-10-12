@@ -1,3 +1,4 @@
+using RogueNinjaChase.Core;
 using RogueNinjaChase.Mission;
 using RogueNinjaChase.Ninja.Presenter;
 using RogueNinjaChase.Ninja.View;
@@ -9,7 +10,7 @@ namespace RogueNinjaChase.Ninja.AI
     /// <summary>
     /// Connects vision, the body, and the animator. The brain decides the state.
     /// </summary>
-    public sealed class NinjaAgent : MonoBehaviour
+    public sealed class NinjaAgent : MonoBehaviour, INoiseListener
     {
         [SerializeField] float _confirmTime = 0.35f;
         [SerializeField] float _loseSightTime = 2f;
@@ -17,6 +18,7 @@ namespace RogueNinjaChase.Ninja.AI
         [SerializeField] float _patrolSpeed = 1.1f;
         [SerializeField] float _chaseSpeed = 3.2f;
         [SerializeField] float _catchDistance = 1.25f;
+        [SerializeField] MissionFlow _mission;
 
         NinjaVision _vision;
         NinjaMotor _motor;
@@ -27,9 +29,10 @@ namespace RogueNinjaChase.Ninja.AI
         NinjaClip _clip = NinjaClip.Patrol;
         bool _clipPending;
         float _catchSqr;
-        MissionFlow _mission;
+        IMission _rules;
 
         public NinjaState State => _presenter.State;
+        public Vector3 Position => transform.position;
 
         /// <summary>
         /// One noise for the next tick. The distraction throw calls this later.
@@ -54,11 +57,9 @@ namespace RogueNinjaChase.Ninja.AI
             var brain = new NinjaBrainModel(_confirmTime, _loseSightTime, _waitTime, _patrolSpeed, _chaseSpeed);
             _presenter = new NinjaPresenter(brain, _motor);
             _catchSqr = _catchDistance * _catchDistance;
-        }
-
-        void Start()
-        {
-            _mission = MissionFlow.Instance;
+            if (_mission == null)
+                _mission = FindAnyObjectByType<MissionFlow>();
+            _rules = _mission;
         }
 
         void FixedUpdate()
@@ -81,8 +82,8 @@ namespace RogueNinjaChase.Ninja.AI
                 _route.Advance();
             if (_cone != null)
                 _cone.SetColor(step.ConeColor);
-            if (step.Catch && target != null && _mission != null)
-                _mission.TryCatch();
+            if (step.Catch && target != null && _rules != null)
+                _rules.TryCatch();
             if (step.Clip != _clip)
             {
                 _clip = step.Clip;

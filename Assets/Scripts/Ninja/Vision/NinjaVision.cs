@@ -20,6 +20,7 @@ namespace RogueNinjaChase.Ninja.Vision
         [SerializeField] float _eyeHeight = 0.45f;
         [SerializeField] float _targetHeight = 0.4f;
         [SerializeField] LayerMask _occlusion = ~0;
+        [SerializeField] string _modelName = "Model";
 
         readonly RaycastHit[] _hits = new RaycastHit[HitCapacity];
         IPlayerStance _stance;
@@ -50,7 +51,7 @@ namespace RogueNinjaChase.Ninja.Vision
 
         void FitSampleHeights()
         {
-            if (_eye == null && TryBodyHeight(transform.Find("Model"), out float ninjaHeight))
+            if (_eye == null && TryBodyHeight(transform.Find(_modelName), out float ninjaHeight))
                 _eyeHeight = ninjaHeight * 0.85f;
 
             if (_target == null)
