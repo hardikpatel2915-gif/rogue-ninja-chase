@@ -40,6 +40,11 @@ namespace RogueNinjaChase.Player.View
         public Vector3 Forward => Aim.forward;
         public Vector3 Right => Aim.right;
 
+        public void SetAim(Transform aim)
+        {
+            _aim = aim;
+        }
+
         Transform Aim => _aim != null ? _aim : transform;
 
         void Awake()
@@ -49,6 +54,8 @@ namespace RogueNinjaChase.Player.View
             // Pitch and roll stay frozen. Yaw is free so mouse look can turn the body.
             _body.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             _body.interpolation = RigidbodyInterpolation.Interpolate;
+            // Collision must not store a yaw spin. The camera sets yaw, and a leftover spin fights that forever.
+            _body.maxAngularVelocity = 0f;
 
             StandingHeight = _capsule.height;
             StandingCenterY = _capsule.center.y;

@@ -56,8 +56,8 @@ MonoBehaviour:
   _viewAngle: 90
   _viewDistance: 8
   _crouchDistanceScale: 0.5
-  _eyeHeight: 1.2
-  _targetHeight: 1
+  _eyeHeight: 0.45
+  _targetHeight: 0.4
   _occlusion:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -90,7 +90,7 @@ MonoBehaviour:
   _loseSightTime: 2
   _waitTime: 2
   _patrolSpeed: 0.7
-  _chaseSpeed: 1.2
+  _chaseSpeed: 2.1
   _catchDistance: 1.25
 --- !u!114 &2000000000000006
 MonoBehaviour:

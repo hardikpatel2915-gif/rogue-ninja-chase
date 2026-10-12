@@ -13,11 +13,19 @@ namespace RogueNinjaChase.Player.View
         const float Thickness = 2f;
 
         static Sprite _pixel;
+        GameObject _root;
+
+        public void SetVisible(bool visible)
+        {
+            if (_root != null && _root.activeSelf != visible)
+                _root.SetActive(visible);
+        }
 
         void Awake()
         {
             Sprite pixel = Pixel();
             var canvasObject = new GameObject("AimCrosshair");
+            _root = canvasObject;
             var canvas = canvasObject.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvas.sortingOrder = 10;

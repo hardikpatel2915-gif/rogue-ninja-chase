@@ -17,8 +17,8 @@ namespace RogueNinjaChase.Ninja.Vision
         [SerializeField] float _viewAngle = 90f;
         [SerializeField] float _viewDistance = 8f;
         [SerializeField] float _crouchDistanceScale = 0.5f;
-        [SerializeField] float _eyeHeight = 1.2f;
-        [SerializeField] float _targetHeight = 1f;
+        [SerializeField] float _eyeHeight = 0.45f;
+        [SerializeField] float _targetHeight = 0.4f;
         [SerializeField] LayerMask _occlusion = ~0;
 
         readonly RaycastHit[] _hits = new RaycastHit[HitCapacity];
@@ -43,6 +43,40 @@ namespace RogueNinjaChase.Ninja.Vision
 
             if (_target != null)
                 _stance = _target.GetComponentInParent<IPlayerStance>();
+
+            // A ray above the bodies misses the obstacle standing between them.
+            FitSampleHeights();
+        }
+
+        void FitSampleHeights()
+        {
+            if (_eye == null && TryBodyHeight(transform.Find("Model"), out float ninjaHeight))
+                _eyeHeight = ninjaHeight * 0.85f;
+
+            if (_target == null)
+                return;
+
+            CapsuleCollider body = _target.GetComponent<CapsuleCollider>();
+            if (body != null)
+                _targetHeight = body.center.y;
+        }
+
+        static bool TryBodyHeight(Transform model, out float height)
+        {
+            height = 0f;
+            if (model == null)
+                return false;
+
+            Renderer[] renderers = model.GetComponentsInChildren<Renderer>();
+            if (renderers.Length == 0)
+                return false;
+
+            Bounds bounds = renderers[0].bounds;
+            for (int i = 1; i < renderers.Length; i++)
+                bounds.Encapsulate(renderers[i].bounds);
+
+            height = bounds.size.y;
+            return height > 0.05f;
         }
 
         void LateUpdate()

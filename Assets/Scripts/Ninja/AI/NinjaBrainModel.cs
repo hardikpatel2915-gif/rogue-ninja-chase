@@ -85,20 +85,19 @@ namespace RogueNinjaChase.Ninja.AI
                     break;
             }
 
-            return OrderFor(sense.CanSeePlayer);
+            return OrderFor();
         }
 
-        NinjaOrder OrderFor(bool canSeePlayer)
+        NinjaOrder OrderFor()
         {
             switch (_state)
             {
                 case NinjaState.Chase:
-                    return new NinjaOrder(
-                        NinjaState.Chase,
-                        canSeePlayer ? NinjaDestination.Player : NinjaDestination.LastKnown,
-                        _chaseSpeed);
+                    // Keep the live player position for the whole chase, including a short loss of sight.
+                    return new NinjaOrder(NinjaState.Chase, NinjaDestination.Player, _chaseSpeed);
                 case NinjaState.Investigate:
-                    return new NinjaOrder(NinjaState.Investigate, NinjaDestination.LastKnown, _patrolSpeed);
+                    // The run to the point uses the chase clip, so it uses chase speed. The wait does not move.
+                    return new NinjaOrder(NinjaState.Investigate, NinjaDestination.LastKnown, _chaseSpeed);
                 default:
                     return new NinjaOrder(NinjaState.Patrol, NinjaDestination.Route, _patrolSpeed);
             }

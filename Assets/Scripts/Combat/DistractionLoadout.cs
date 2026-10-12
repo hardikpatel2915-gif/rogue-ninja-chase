@@ -10,7 +10,9 @@ namespace RogueNinjaChase.Combat
 {
     /// <summary>
     /// Q plays the throw, then the smoke bomb leaves the right hand toward the crosshair.
+    /// Throw is only accepted in the close camera. Runs after that camera so a zoom-out the same frame does not release.
     /// </summary>
+    [DefaultExecutionOrder(100)]
     public sealed class DistractionLoadout : MonoBehaviour
     {
         [SerializeField] InputActionAsset _actions;
@@ -35,6 +37,7 @@ namespace RogueNinjaChase.Combat
         InputAction _throw;
         Transform _aim;
         PlayerLocomotion _locomotion;
+        ShoulderCamera _camera;
         Animator _animator;
         Transform _hand;
         float _noiseSqr;
@@ -61,6 +64,7 @@ namespace RogueNinjaChase.Combat
             if (GetComponent<AimCrosshair>() == null)
                 gameObject.AddComponent<AimCrosshair>();
             _locomotion = GetComponent<PlayerLocomotion>();
+            _camera = GetComponent<ShoulderCamera>();
             Resolve();
         }
 
@@ -87,6 +91,12 @@ namespace RogueNinjaChase.Combat
 
         void Update()
         {
+            if (!CanThrow())
+            {
+                _throwPending = false;
+                return;
+            }
+
             if (_projectileInFlight || _throwPending || _throw == null || !_throw.WasPressedThisFrame())
                 return;
 
@@ -96,8 +106,15 @@ namespace RogueNinjaChase.Combat
             _throwWait = 0f;
         }
 
+        bool CanThrow()
+        {
+            return _camera == null || _camera.Aiming;
+        }
+
         void LateUpdate()
         {
+            if (!CanThrow())
+                _throwPending = false;
             if (!_throwPending)
                 return;
 

@@ -12,6 +12,8 @@ namespace RogueNinjaChase.Player.Presenter
         readonly ILookSource _look;
         CameraViewMode _mode;
 
+        public CameraViewMode Mode => _mode;
+
         public ShoulderCameraPresenter(IShoulderCameraModel model, ILookSource look)
         {
             _model = model ?? throw new System.ArgumentNullException(nameof(model));

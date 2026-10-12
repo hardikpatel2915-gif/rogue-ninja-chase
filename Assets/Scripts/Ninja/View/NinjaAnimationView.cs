@@ -12,7 +12,6 @@ namespace RogueNinjaChase.Ninja.View
 
         static readonly int Patrol = Animator.StringToHash("Patrol");
         static readonly int Investigate = Animator.StringToHash("Investigate");
-        static readonly int InvestigateIdle = Animator.StringToHash("InvestigateIdle");
         static readonly int Chase = Animator.StringToHash("Chase");
 
         [SerializeField] RuntimeAnimatorController _controller;
@@ -55,8 +54,6 @@ namespace RogueNinjaChase.Ninja.View
             {
                 case NinjaClip.Investigate:
                     return Investigate;
-                case NinjaClip.InvestigateIdle:
-                    return InvestigateIdle;
                 case NinjaClip.Chase:
                     return Chase;
                 default:

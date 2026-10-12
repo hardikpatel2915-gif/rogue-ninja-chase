@@ -4,12 +4,11 @@ namespace RogueNinjaChase.Ninja.AI
     {
         Patrol = 0,
         Investigate = 1,
-        InvestigateIdle = 2,
-        Chase = 3
+        Chase = 2
     }
 
     /// <summary>
-    /// Patrol, investigate, and chase each have their own clip. The investigate wait does not keep walking.
+    /// The run to an investigation point uses the chase clip. Investigate plays only once that point is reached.
     /// </summary>
     public static class NinjaClipSelect
     {
@@ -20,7 +19,7 @@ namespace RogueNinjaChase.Ninja.AI
                 case NinjaState.Chase:
                     return NinjaClip.Chase;
                 case NinjaState.Investigate:
-                    return moving ? NinjaClip.Investigate : NinjaClip.InvestigateIdle;
+                    return moving ? NinjaClip.Chase : NinjaClip.Investigate;
                 default:
                     return NinjaClip.Patrol;
             }

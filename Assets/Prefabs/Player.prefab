@@ -108,22 +108,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: RogueNinjaChase.Runtime::RogueNinjaChase.Player.View.PlayerMotorView
   _walkSpeed: 0.7
-  _sprintSpeed: 1.2
+  _sprintSpeed: 1.5
   _crouchSpeed: 0.45
   _jumpSpeed: 3
   _aim: {fileID: 0}
---- !u!114 &1000000000000013
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000000000000001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4e8a1b67d2f4c90a5b3e7d1f6482039, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: RogueNinjaChase.Runtime::RogueNinjaChase.Player.Presenter.PlayerMotor
 --- !u!114 &1000000000000006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,18 +169,6 @@ MonoBehaviour:
   _sensitivity: 0.12
   _minPitch: -35
   _maxPitch: 55
---- !u!114 &1000000000000015
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000000000000001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8c4e1d27b6f4a90b3c5d8e0f1a29471, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: RogueNinjaChase.Runtime::RogueNinjaChase.Player.Presenter.ShoulderCamera
 --- !u!114 &1000000000000010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,6 +218,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: RogueNinjaChase.Runtime::RogueNinjaChase.Player.View.PlayerLocomotionView
   _controller: {fileID: 910000001, guid: c7e1a4b92f6d4c83a0e5d8b1c3f27490, type: 2}
+--- !u!114 &1000000000000013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000000000000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8a1b67d2f4c90a5b3e7d1f6482039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RogueNinjaChase.Runtime::RogueNinjaChase.Player.Presenter.PlayerMotor
 --- !u!114 &1000000000000014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,6 +242,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6a2d9b45f8c4e73a1b7c4d8f2950631, type: 3}
   m_Name: 
   m_EditorClassIdentifier: RogueNinjaChase.Runtime::RogueNinjaChase.Player.Presenter.PlayerLocomotion
+--- !u!114 &1000000000000015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000000000000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8c4e1d27b6f4a90b3c5d8e0f1a29471, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RogueNinjaChase.Runtime::RogueNinjaChase.Player.Presenter.ShoulderCamera
 --- !u!1001 &1000000000000200
 PrefabInstance:
   m_ObjectHideFlags: 0
