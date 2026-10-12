@@ -1,6 +1,4 @@
 using RogueNinjaChase.Player.Aim;
-using RogueNinjaChase.Player.Input;
-using RogueNinjaChase.Player.Presenter;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,7 +6,7 @@ namespace RogueNinjaChase.Player.View
 {
     [RequireComponent(typeof(Rigidbody))]
     /// <summary>
-    /// Yaw turns the body. Pitch stays on the camera. V switches shoulder and follow framing.
+    /// Turns the body and places the camera. Reports Escape and click, then applies the pointer lock it is given.
     /// </summary>
     public sealed class ShoulderCameraView : MonoBehaviour
     {
@@ -20,57 +18,48 @@ namespace RogueNinjaChase.Player.View
         [SerializeField] float _maxPitch = 55f;
 
         Rigidbody _body;
-        ShoulderCameraPresenter _presenter;
-        PlayerCameraInput _cameraInput;
-        CameraViewMode _mode;
-        bool _locked;
+
+        public InputActionAsset Actions => _actions;
+        public float Sensitivity => _sensitivity;
+        public float MinPitch => _minPitch;
+        public float MaxPitch => _maxPitch;
+        public bool EscapePressed
+        {
+            get
+            {
+                Keyboard keyboard = Keyboard.current;
+                return keyboard != null && keyboard.escapeKey.wasPressedThisFrame;
+            }
+        }
+
+        public bool ClickPressed
+        {
+            get
+            {
+                Mouse mouse = Mouse.current;
+                return mouse != null && mouse.leftButton.wasPressedThisFrame;
+            }
+        }
 
         void Awake()
         {
             _body = GetComponent<Rigidbody>();
             EnsureRig();
-
-            PlayerLookInput lookInput = GetComponent<PlayerLookInput>();
-            if (lookInput == null)
-                lookInput = gameObject.AddComponent<PlayerLookInput>();
-            lookInput.SetActions(_actions);
-            ILookSource look = lookInput;
-
-            _cameraInput = GetComponent<PlayerCameraInput>();
-            if (_cameraInput == null)
-                _cameraInput = gameObject.AddComponent<PlayerCameraInput>();
-            _cameraInput.SetActions(_actions);
-
-            float yaw = _body.rotation.eulerAngles.y;
-            var model = new ShoulderCameraModel(_sensitivity, _minPitch, _maxPitch, yaw, 0f);
-            _presenter = new ShoulderCameraPresenter(model, look);
         }
 
-        void OnEnable()
+        public void Apply(CameraPose pose, CameraFraming framing)
         {
-            LockCursor();
-        }
-
-        void OnDisable()
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            _locked = false;
-        }
-
-        void LateUpdate()
-        {
-            UpdateCursor();
-            if (_cameraInput.ConsumeToggle())
-                _mode = CameraFraming.Toggle(_mode);
-
-            CameraPose pose = _presenter.Tick();
-            CameraFraming framing = CameraFraming.For(_mode);
             _body.MoveRotation(Quaternion.Euler(0f, pose.YawDegrees, 0f));
             _pitchPivot.localRotation = Quaternion.Euler(pose.PitchDegrees, 0f, 0f);
             _pitchPivot.localPosition = new Vector3(0f, framing.PivotHeight, 0f);
             _camera.localPosition = new Vector3(framing.Side, framing.Height, -framing.Distance);
             _camera.localRotation = Quaternion.Euler(framing.LookDownDegrees, 0f, 0f);
+        }
+
+        public void ApplyCursor(bool locked)
+        {
+            Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
+            Cursor.visible = !locked;
         }
 
         void EnsureRig()
@@ -93,29 +82,6 @@ namespace RogueNinjaChase.Player.View
             if (cameraObject.GetComponent<AudioListener>() == null)
                 cameraObject.AddComponent<AudioListener>();
             _camera = cameraObject.transform;
-        }
-
-        void UpdateCursor()
-        {
-            Keyboard keyboard = Keyboard.current;
-            if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                _locked = false;
-                return;
-            }
-
-            Mouse mouse = Mouse.current;
-            if (!_locked && mouse != null && mouse.leftButton.wasPressedThisFrame)
-                LockCursor();
-        }
-
-        void LockCursor()
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            _locked = true;
         }
     }
 }

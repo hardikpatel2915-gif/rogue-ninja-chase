@@ -6,7 +6,7 @@ namespace RogueNinjaChase.Ninja.AI
     /// <summary>
     /// Kinematic move. A blocked forward feeler steers to a clear side.
     /// </summary>
-    public sealed class NinjaMotor : MonoBehaviour
+    public sealed class NinjaMotor : MonoBehaviour, INinjaMotor
     {
         const int HitCapacity = 4;
 

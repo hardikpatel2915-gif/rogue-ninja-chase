@@ -1,4 +1,5 @@
 using RogueNinjaChase.Ninja.AI;
+using RogueNinjaChase.Player.Presenter;
 using RogueNinjaChase.Player.View;
 using RogueNinjaChase.Pool;
 using UnityEngine;
@@ -8,7 +9,7 @@ using UnityEngine.Rendering;
 namespace RogueNinjaChase.Combat
 {
     /// <summary>
-    /// Q throws one smoke bomb at the crosshair. Another throw waits until that bomb is gone.
+    /// Q plays the throw, then the smoke bomb leaves the right hand toward the crosshair.
     /// </summary>
     public sealed class DistractionLoadout : MonoBehaviour
     {
@@ -23,6 +24,9 @@ namespace RogueNinjaChase.Combat
         [SerializeField] Vector3 _handLocal = new Vector3(0.28f, 1.05f, 0.35f);
         [SerializeField] float _aimDistance = 12f;
 
+        const float ReleaseNormalized = 0.32f;
+        static readonly int ThrowState = Animator.StringToHash("Throw");
+
         PrefabPool _projectiles;
         PrefabPool _flashes;
         DistractionProjectile[] _projectileScripts;
@@ -30,8 +34,13 @@ namespace RogueNinjaChase.Combat
         NinjaAgent[] _ninjas;
         InputAction _throw;
         Transform _aim;
+        PlayerLocomotion _locomotion;
+        Animator _animator;
+        Transform _hand;
         float _noiseSqr;
         bool _projectileInFlight;
+        bool _throwPending;
+        float _throwWait;
 
         public void SetActions(InputActionAsset actions)
         {
@@ -46,11 +55,12 @@ namespace RogueNinjaChase.Combat
         {
             _noiseSqr = _noiseRadius * _noiseRadius;
             var root = new GameObject("DistractionPool").transform;
-            _projectiles = CreatePool(root, _capacity, 0.12f, _projectileMaterial, true, out _projectileScripts);
+            _projectiles = CreatePool(root, _capacity, 0.04f, _projectileMaterial, true, out _projectileScripts);
             _flashes = CreatePool(root, _capacity, 0.45f, _smokeMaterial, false, out SmokeCloud[] _);
             IgnorePlayerColliders();
             if (GetComponent<AimCrosshair>() == null)
                 gameObject.AddComponent<AimCrosshair>();
+            _locomotion = GetComponent<PlayerLocomotion>();
             Resolve();
         }
 
@@ -59,6 +69,7 @@ namespace RogueNinjaChase.Combat
             _ninjas = FindObjectsByType<NinjaAgent>(FindObjectsSortMode.None);
             Camera childCamera = GetComponentInChildren<Camera>();
             _aim = childCamera != null ? childCamera.transform : transform;
+            _hand = FindThrowHand();
         }
 
         void OnEnable()
@@ -76,10 +87,38 @@ namespace RogueNinjaChase.Combat
 
         void Update()
         {
-            if (_projectileInFlight || _throw == null || !_throw.WasPressedThisFrame())
+            if (_projectileInFlight || _throwPending || _throw == null || !_throw.WasPressedThisFrame())
                 return;
 
+            if (_locomotion != null)
+                _locomotion.NotifyThrow();
+            _throwPending = true;
+            _throwWait = 0f;
+        }
+
+        void LateUpdate()
+        {
+            if (!_throwPending)
+                return;
+
+            _throwWait += Time.deltaTime;
+            // Release is a point in the clip, so a faster Throw state lets go sooner.
+            if (!ReachedRelease() && _throwWait < 1.5f)
+                return;
+
+            _throwPending = false;
             Throw();
+        }
+
+        bool ReachedRelease()
+        {
+            if (_animator == null)
+                return true;
+
+            AnimatorStateInfo info = _animator.IsInTransition(0)
+                ? _animator.GetNextAnimatorStateInfo(0)
+                : _animator.GetCurrentAnimatorStateInfo(0);
+            return info.shortNameHash == ThrowState && info.normalizedTime >= ReleaseNormalized;
         }
 
         public void Impact(Vector3 position)
@@ -125,7 +164,7 @@ namespace RogueNinjaChase.Combat
 
         void Throw()
         {
-            Vector3 hand = transform.TransformPoint(_handLocal);
+            Vector3 hand = _hand != null ? _hand.position : transform.TransformPoint(_handLocal);
             Vector3 direction = AimDirection(hand);
             if (!_projectiles.TrySpawn(hand, Quaternion.identity, out GameObject projectileObject))
                 return;
@@ -133,6 +172,30 @@ namespace RogueNinjaChase.Combat
             _projectileInFlight = true;
             DistractionProjectile projectile = projectileObject.GetComponent<DistractionProjectile>();
             projectile.Launch(this, direction * _speed, _projectileLife);
+        }
+
+        Transform FindThrowHand()
+        {
+            _animator = GetComponentInChildren<Animator>(true);
+            if (_animator != null && _animator.isHuman)
+                return _animator.GetBoneTransform(HumanBodyBones.RightHand);
+
+            return FindNamed(transform, "bip001 r hand");
+        }
+
+        static Transform FindNamed(Transform root, string boneName)
+        {
+            if (root.name == boneName)
+                return root;
+
+            for (int i = 0; i < root.childCount; i++)
+            {
+                Transform found = FindNamed(root.GetChild(i), boneName);
+                if (found != null)
+                    return found;
+            }
+
+            return null;
         }
 
         /// <summary>

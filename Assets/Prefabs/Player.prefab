@@ -18,6 +18,10 @@ GameObject:
   - component: {fileID: 1000000000000009}
   - component: {fileID: 1000000000000010}
   - component: {fileID: 1000000000000011}
+  - component: {fileID: 1000000000000012}
+  - component: {fileID: 1000000000000013}
+  - component: {fileID: 1000000000000014}
+  - component: {fileID: 1000000000000015}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -103,10 +107,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5acfd97d8a2f484d81db0dfa58e842da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: RogueNinjaChase.Runtime::RogueNinjaChase.Player.View.PlayerMotorView
-  _walkSpeed: 3.5
-  _sprintSpeed: 6
-  _crouchSpeed: 1.75
+  _walkSpeed: 0.7
+  _sprintSpeed: 1.2
+  _crouchSpeed: 0.45
+  _jumpSpeed: 3
   _aim: {fileID: 0}
+--- !u!114 &1000000000000013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000000000000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8a1b67d2f4c90a5b3e7d1f6482039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RogueNinjaChase.Runtime::RogueNinjaChase.Player.Presenter.PlayerMotor
 --- !u!114 &1000000000000006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,6 +181,18 @@ MonoBehaviour:
   _sensitivity: 0.12
   _minPitch: -35
   _maxPitch: 55
+--- !u!114 &1000000000000015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000000000000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8c4e1d27b6f4a90b3c5d8e0f1a29471, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RogueNinjaChase.Runtime::RogueNinjaChase.Player.Presenter.ShoulderCamera
 --- !u!114 &1000000000000010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,6 +227,33 @@ MonoBehaviour:
   _projectileLife: 2
   _smokeLife: 1.6
   _noiseRadius: 8
+  _handLocal: {x: 0.28, y: 1.05, z: 0.35}
+  _aimDistance: 12
+--- !u!114 &1000000000000012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000000000000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f8a1c6e2d9b4a70b3e5c8d1f6a04927, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RogueNinjaChase.Runtime::RogueNinjaChase.Player.View.PlayerLocomotionView
+  _controller: {fileID: 910000001, guid: c7e1a4b92f6d4c83a0e5d8b1c3f27490, type: 2}
+--- !u!114 &1000000000000014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000000000000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6a2d9b45f8c4e73a1b7c4d8f2950631, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RogueNinjaChase.Runtime::RogueNinjaChase.Player.Presenter.PlayerLocomotion
 --- !u!1001 &1000000000000200
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -206,51 +262,51 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1000000000000002}
     m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: ff8ab27767b064c78b7bec91f59eb324, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 656c793cf9f91422986a29db77f8d3dd, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.2
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ff8ab27767b064c78b7bec91f59eb324, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 656c793cf9f91422986a29db77f8d3dd, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.2
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ff8ab27767b064c78b7bec91f59eb324, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 656c793cf9f91422986a29db77f8d3dd, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.2
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ff8ab27767b064c78b7bec91f59eb324, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 656c793cf9f91422986a29db77f8d3dd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ff8ab27767b064c78b7bec91f59eb324, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 656c793cf9f91422986a29db77f8d3dd, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ff8ab27767b064c78b7bec91f59eb324, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 656c793cf9f91422986a29db77f8d3dd, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ff8ab27767b064c78b7bec91f59eb324, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 656c793cf9f91422986a29db77f8d3dd, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ff8ab27767b064c78b7bec91f59eb324, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 656c793cf9f91422986a29db77f8d3dd, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ff8ab27767b064c78b7bec91f59eb324, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 656c793cf9f91422986a29db77f8d3dd, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ff8ab27767b064c78b7bec91f59eb324, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 656c793cf9f91422986a29db77f8d3dd, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ff8ab27767b064c78b7bec91f59eb324, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 656c793cf9f91422986a29db77f8d3dd, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: ff8ab27767b064c78b7bec91f59eb324, type: 3}
+    - target: {fileID: 919132149155446097, guid: 656c793cf9f91422986a29db77f8d3dd, type: 3}
       propertyPath: m_Name
       value: Model
       objectReference: {fileID: 0}
@@ -258,9 +314,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ff8ab27767b064c78b7bec91f59eb324, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 656c793cf9f91422986a29db77f8d3dd, type: 3}
 --- !u!4 &543022421229954851 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ff8ab27767b064c78b7bec91f59eb324, type: 3}
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 656c793cf9f91422986a29db77f8d3dd, type: 3}
   m_PrefabInstance: {fileID: 1000000000000200}
   m_PrefabAsset: {fileID: 0}

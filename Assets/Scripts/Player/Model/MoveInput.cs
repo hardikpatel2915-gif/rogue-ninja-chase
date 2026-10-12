@@ -6,13 +6,15 @@ namespace RogueNinjaChase.Player.Model
         public readonly float Forward;
         public readonly bool Sprint;
         public readonly bool Crouch;
+        public readonly bool Jump;
 
-        public MoveInput(float strafe, float forward, bool sprint, bool crouch)
+        public MoveInput(float strafe, float forward, bool sprint, bool crouch, bool jump = false)
         {
             Strafe = strafe;
             Forward = forward;
             Sprint = sprint;
             Crouch = crouch;
+            Jump = jump;
         }
     }
 }

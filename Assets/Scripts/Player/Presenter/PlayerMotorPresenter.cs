@@ -7,7 +7,7 @@ using RogueNinjaChase.Player.View;
 namespace RogueNinjaChase.Player.Presenter
 {
     /// <summary>
-    /// One tick: read input, ask the model, write the view. No Unity types of its own.
+    /// One tick: read input and aim, ask the model, write the view.
     /// </summary>
     public sealed class PlayerMotorPresenter
     {
@@ -28,12 +28,23 @@ namespace RogueNinjaChase.Player.Presenter
             _aim = aim ?? throw new ArgumentNullException(nameof(aim));
         }
 
-        public void Tick()
+        public void Tick(float deltaTime)
         {
             MoveInput input = _input.Read();
             MotorOutput output = _model.Evaluate(in input, _aim.Forward, _aim.Right);
             _view.SetPlanarVelocity(output.PlanarVelocity);
-            _view.SetCrouching(output.IsCrouching);
+            CapsulePose pose = CapsulePose.From(
+                output.IsCrouching,
+                _view.StandingHeight,
+                _view.StandingRadius,
+                _view.StandingCenterY);
+            _view.ApplyCapsule(in pose);
+            JumpCommand jump = _model.AdvanceJump(
+                output.Jump,
+                _view.ProbeGround(),
+                _view.VerticalSpeed,
+                deltaTime);
+            _view.ApplyJump(in jump);
         }
     }
 }

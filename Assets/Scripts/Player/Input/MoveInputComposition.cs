@@ -4,13 +4,13 @@ using UnityEngine;
 namespace RogueNinjaChase.Player.Input
 {
     /// <summary>
-    /// Stick X is strafe. Stick Y is forward. Both held flags are passed through.
+    /// Stick X is strafe. Stick Y is forward. Sprint and crouch are held. Jump is one press.
     /// </summary>
     public static class MoveInputComposition
     {
-        public static MoveInput Create(Vector2 move, bool sprint, bool crouch)
+        public static MoveInput Create(Vector2 move, bool sprint, bool crouch, bool jump = false)
         {
-            return new MoveInput(move.x, move.y, sprint, crouch);
+            return new MoveInput(move.x, move.y, sprint, crouch, jump);
         }
     }
 }
